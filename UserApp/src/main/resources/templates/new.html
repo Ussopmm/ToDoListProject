@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Task page</title>
+</head>
+<body>
+<h1>New Task</h1>
+<div th:if="${errors}">
+    <h2>Errors was made</h2>
+    <ul>
+        <li th:each="error : ${errors}" th:text="${error}"></li>
+    </ul>
+</div>
+<form th:method="post" th:action="@{/todo/tasks/new}" th:object="${task}">
+    <label>
+        Task name:<br>
+        <!--    <input type="text" name="title" data-th-value="${payload?.productName()}">-->
+        <input type="text" name="name" th:value="${task.name()}">
+    </label><br>
+    <label>
+        Description:<br>
+        <textarea name="description" th:value="${task.description()}"></textarea>
+        <!--    <input type="text" name="description" th:value="${product.description()}">-->
+    </label><br>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Tasks</title>
+</head>
+<body>
+
+<a th:href="@{/todo/tasks/new}">+ New Task</a>
+
+<h1>List of Tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Task</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.id()}"></td>
+        <td>
+           <a th:href="@{/todo/task/{taskId}(taskId=${task.id()})}" th:text="${task.name()}">
+           </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

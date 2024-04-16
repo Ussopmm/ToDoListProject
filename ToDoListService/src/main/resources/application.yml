@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/to_do_list
+    username: postgres
+    password: Eldos2812
+  jpa:
+      hibernate:
+        ddl-auto: update
+server:
+  port: 8081

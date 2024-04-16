@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${task.name}]] &ndash; Task</title>
+</head>
+<body>
+<a th:href="@{/todo/tasks}">&larr; Go to Tasks list</a>
+
+<ul>
+    <li><strong>ID</strong>: <span th:text="${task.id()}"></span></li>
+    <li><strong>Task name</strong>: <span th:text="${task.name()}"></span></li>
+    <li><strong>Description</strong>: <span th:text="${task.description()}"></span></li>
+</ul>
+
+<a th:href="@{/todo/task/{taskId}/edit(taskId=${taskId})}">Update task</a>
+
+<form th:method="POST" th:action="@{/todo/task/{taskId}/delete(taskId=${taskId})}">
+    <button type="submit">Delete</button>
+</form>
+</body>
+</html>

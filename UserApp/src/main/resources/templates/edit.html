@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit task page</title>
+</head>
+<body>
+<a th:href="@{/todo/task/{taskId}(taskId=${taskId})}">&larr; Go to Task</a>
+
+<h1>Edit task</h1>
+<div th:if="${errors}">
+    <h2>Errors was made</h2>
+    <ul>
+        <li th:each="error : ${errors}" th:text="${error}"></li>
+    </ul>
+</div>
+<form th:method="post" th:action="@{/todo/task/{taskId}/edit(taskId=${taskId})}">
+    <label>
+        Название:<br>
+        <input type="text" name="name" th:value="${task.name()}">
+    </label><br>
+    <label>
+        Описание:<br>
+        <input type="text" name="description" th:value="${task.description()}">
+    </label><br>
+    <button type="submit">Edit</button>
+</form>
+</body>
+</html>
