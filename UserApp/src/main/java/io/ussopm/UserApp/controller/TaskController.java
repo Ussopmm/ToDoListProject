@@ -25,6 +25,8 @@ public class TaskController {
         return this.taskRestClient.getTaskById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task not found"));
     }
+
+
     @GetMapping()
     public String getTaskById() {
         return "task";

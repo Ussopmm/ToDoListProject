@@ -15,6 +15,7 @@
     </ul>
 </div>
 <form th:method="post" th:action="@{/todo/task/{taskId}/edit(taskId=${taskId})}">
+
     <label>
         Название:<br>
         <input type="text" name="name" th:value="${task.name()}">

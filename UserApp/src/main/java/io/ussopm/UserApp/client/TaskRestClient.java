@@ -1,6 +1,8 @@
 package io.ussopm.UserApp.client;
 
 import io.ussopm.UserApp.controller.payload.NewTaskPayload;
+import io.ussopm.UserApp.dto.CustomerDTO;
+import io.ussopm.UserApp.model.AuthResponse;
 import io.ussopm.UserApp.model.Task;
 
 import java.util.List;
@@ -17,4 +19,6 @@ public interface TaskRestClient {
     void updateTask(int taskId, String taskName, String description);
 
     void deleteTask(int taskId);
+
+
 }

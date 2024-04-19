@@ -42,5 +42,9 @@ public class TasksController {
             return "new";
         }
     }
+    @GetMapping("/hello")
+    public String greeting () {
+        return "hello";
+    }
 
 }

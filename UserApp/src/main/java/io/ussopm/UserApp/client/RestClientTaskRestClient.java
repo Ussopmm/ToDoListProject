@@ -1,8 +1,11 @@
 package io.ussopm.UserApp.client;
 
 import io.ussopm.UserApp.client.TaskRestClient;
+import io.ussopm.UserApp.controller.payload.LoginRequest;
 import io.ussopm.UserApp.controller.payload.NewTaskPayload;
 import io.ussopm.UserApp.controller.payload.UpdateTaskPayload;
+import io.ussopm.UserApp.dto.CustomerDTO;
+import io.ussopm.UserApp.model.AuthResponse;
 import io.ussopm.UserApp.model.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -10,8 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
-
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -88,4 +89,7 @@ public class RestClientTaskRestClient implements TaskRestClient {
             throw new NoSuchElementException(ex);
         }
     }
+
+
+
 }

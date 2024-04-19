@@ -16,6 +16,7 @@
     <modules>
         <module>ToDoListService</module>
         <module>UserApp</module>
+        <module>AuthService</module>
     </modules>
 
     <properties>
