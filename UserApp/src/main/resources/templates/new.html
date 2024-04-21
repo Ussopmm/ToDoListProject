@@ -24,7 +24,13 @@
         <textarea name="description" th:value="${task.description()}"></textarea>
         <!--    <input type="text" name="description" th:value="${product.description()}">-->
     </label><br>
-    <button type="submit">Создать</button>
+    <button type="submit">Create</button>
+
+    <br>
+    <h3><a th:href="@{/todo/tasks}">&larr; Go to tasks list</a></h3>
+    <br>
+    <h3><a th:href="@{/todo/tasks/home}">&larr; Go to home page</a></h3>
+
 </form>
 </body>
 </html>

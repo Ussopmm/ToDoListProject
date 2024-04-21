@@ -5,7 +5,11 @@ spring:
     username: postgres
     password: Eldos2812
   jpa:
-      hibernate:
+    hibernate:
         ddl-auto: update
+    show-sql: true
 server:
   port: 8081
+logging:
+  level:
+    sql: trace

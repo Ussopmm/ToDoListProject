@@ -1,7 +1,7 @@
 package io.ussopm.UserApp.config;
 
-import io.ussopm.UserApp.client.RestClientAuthRestClient;
-import io.ussopm.UserApp.client.RestClientTaskRestClient;
+import io.ussopm.UserApp.client.impl.RestClientAuthRestClient;
+import io.ussopm.UserApp.client.impl.RestClientTaskRestClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

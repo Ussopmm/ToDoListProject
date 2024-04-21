@@ -1,4 +1,5 @@
-package io.ussopm.AuthService.model;
+package io.ussopm.ToDoListService.model;
+
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "t_customer")
 @Data
 @NoArgsConstructor
-public class Customer{
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,19 +45,14 @@ public class Customer{
     @Email(message = "field have to be in email format *name@email.com*")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "t_customer_authorities",
-            joinColumns = @JoinColumn(name = "id_customer"),
-            inverseJoinColumns = @JoinColumn(name = "id_authorities"))
-    private List<Authority> authorities;
+    @OneToMany(mappedBy = "customer")
+    private List<Task> tasks;
 
-
-    public Customer(String username, String password, String phoneNumber, String email, List<Authority> authorities) {
+    public Customer(String username, String password, String phoneNumber, String email) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.authorities = authorities;
     }
 
 }

@@ -18,11 +18,11 @@
 
     <label>
         Название:<br>
-        <input type="text" name="name" th:value="${task.name()}">
+        <input type="text" name="name" th:value="${task != null ? task.getName() : payload.name()}">
     </label><br>
     <label>
         Описание:<br>
-        <input type="text" name="description" th:value="${task.description()}">
+        <input type="text" name="description" th:value="${task != null ? task.getDescription() : payload.description()}">
     </label><br>
     <button type="submit">Edit</button>
 </form>

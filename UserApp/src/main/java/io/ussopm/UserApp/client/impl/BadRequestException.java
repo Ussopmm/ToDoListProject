@@ -1,4 +1,4 @@
-package io.ussopm.UserApp.client;
+package io.ussopm.UserApp.client.impl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

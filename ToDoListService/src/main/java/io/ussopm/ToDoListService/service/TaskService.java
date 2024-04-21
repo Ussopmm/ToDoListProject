@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface TaskService {
-    List<Task> getAllTasks();
+    List<Task> getAllTasks(String filter);
 
     Task getTaskById(int taskId);
 
@@ -16,4 +16,12 @@ public interface TaskService {
     ResponseEntity<HttpStatus> updateTaskById(int taskId, String name, String description);
 
     ResponseEntity<HttpStatus> deleteTaskById(int taskId);
+    ResponseEntity<HttpStatus> takingTask(int taskId, int customerId);
+//
+
+    ResponseEntity<HttpStatus> markingTaskAsDone(int taskId, int customerId);
+
+    ResponseEntity<HttpStatus> uncheckMarkFromTask(int taskId, int customerId);
+
+    ResponseEntity<HttpStatus> removingTask(int taskId, int customerId);
 }

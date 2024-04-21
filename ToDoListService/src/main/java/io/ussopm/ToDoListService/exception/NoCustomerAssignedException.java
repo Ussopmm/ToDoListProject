@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class AlreadyExistsException extends RuntimeException {
-    private String taskName;
-    private String customer;
+public class NoCustomerAssignedException extends RuntimeException{
 
+//    private String taskName;
+    private String errorMessage;
 }

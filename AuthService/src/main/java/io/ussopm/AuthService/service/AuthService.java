@@ -25,21 +25,16 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
         try {
-            // Аутентификация пользователя
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-            // Сохранение аутентифицированного пользователя в контексте безопасности
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Генерация JWT токена
             String token = issuer.issue(username);
 
-            // Возврат ответа с токеном
             return AuthResponse.builder()
                     .accessToken(token)
                     .build();
         } catch (BadCredentialsException e) {
-            // В случае неверных учетных данных, бросить исключение
             throw new BadCredentialsException("Invalid username or password");
         }
     }

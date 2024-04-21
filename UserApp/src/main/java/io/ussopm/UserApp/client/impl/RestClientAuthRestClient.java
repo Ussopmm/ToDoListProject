@@ -1,5 +1,6 @@
-package io.ussopm.UserApp.client;
+package io.ussopm.UserApp.client.impl;
 
+import io.ussopm.UserApp.client.AuthRestClient;
 import io.ussopm.UserApp.controller.payload.LoginRequest;
 import io.ussopm.UserApp.dto.CustomerDTO;
 import io.ussopm.UserApp.model.AuthResponse;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class RestClientAuthRestClient implements AuthRestClient{
+public class RestClientAuthRestClient implements AuthRestClient {
     private final RestClient restClient;
     @Override
     public AuthResponse login(String username, String password) {

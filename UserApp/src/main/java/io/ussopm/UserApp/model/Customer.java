@@ -51,6 +51,10 @@ public class Customer{
             inverseJoinColumns = @JoinColumn(name = "id_authorities"))
     private List<Authority> authorities;
 
+
+    @OneToMany(mappedBy = "customer")
+    private List<Task> tasks;
+
     public Customer(String username, String password, String phoneNumber, String email, List<Authority> authorities) {
         this.username = username;
         this.password = password;

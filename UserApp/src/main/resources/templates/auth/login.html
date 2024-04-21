@@ -20,6 +20,9 @@
     <div th:if="${param.error}" style="color: red">
         Incorrect username or password
     </div>
+
+    <h3><a th:href="@{/todo/tasks}">&larr; Go to tasks list</a></h3>
+    <h3><a th:href="@{/auth/registration}">&larr; Registration</a></h3>
 </form>
 </body>
 </html>

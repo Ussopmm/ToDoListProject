@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,7 +30,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(login -> login
                         .loginPage("/auth/login")
-//                        .defaultSuccessUrl("/todo/tasks")
+                        .defaultSuccessUrl("/todo/tasks/home")
                         .failureUrl("/auth/login?error"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -39,9 +38,11 @@ public class WebSecurityConfig {
                         .deleteCookies("JSESSIONID"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/api/login", "/auth/api/hello","/auth/api/registration",
-                                "/auth/login", "/auth/logout", "/todo/tasks/**",
+                                "/auth/login", "/auth/logout", "/todo/tasks", "/todo/tasks/home",
                                 "/auth/registration").permitAll()
-                        .requestMatchers("/todo/task/**").authenticated())
+                        .requestMatchers("/todo/task/{taskId}", "/todo/task/{taskId}/edit", "/todo/task/{taskId}/delete",
+                                "/todo/task/{taskId}/taking", "/todo/task/{taskId}/markingTask", "/todo/task/{taskId}/uncheckMark",
+                                "/todo/task/{taskId}/removing", "/todo/tasks/new").authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

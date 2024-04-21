@@ -1,7 +1,12 @@
 package io.ussopm.ToDoListService.service.impl;
 
 import io.ussopm.ToDoListService.exception.AlreadyExistsException;
+import io.ussopm.ToDoListService.exception.AlreadyTakenTaskException;
+import io.ussopm.ToDoListService.exception.MarkingTaskException;
+import io.ussopm.ToDoListService.exception.NoCustomerAssignedException;
+import io.ussopm.ToDoListService.model.Customer;
 import io.ussopm.ToDoListService.model.Task;
+import io.ussopm.ToDoListService.repository.CustomerRepository;
 import io.ussopm.ToDoListService.repository.TaskRepository;
 import io.ussopm.ToDoListService.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +23,19 @@ import java.util.NoSuchElementException;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final CustomerRepository customerRepository;
     @Override
-    public List<Task> getAllTasks() {
-        return this.taskRepository.findAll();
+    public List<Task> getAllTasks(String filter) {
+        if (filter != null && !filter.isBlank()) {
+            return this.taskRepository.findAllByNameLikeIgnoreCase("%" + filter + "%");
+        } else {
+            return this.taskRepository.findAll();
+        }
     }
 
     @Override
     public Task getTaskById(int taskId) {
-        return this.taskRepository.findById(taskId).orElseThrow(NoSuchElementException::new);
+        return this.taskRepository.findById(taskId).orElseThrow(() -> new NoSuchElementException("Task"));
     }
 
     @Override
@@ -34,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
         if (this.taskRepository.existsByName(name)) {
             throw new AlreadyExistsException();
         } else {
-            this.taskRepository.save(new Task(name, description));
+            this.taskRepository.save(new Task(name, description, false));
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
@@ -55,10 +65,93 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public ResponseEntity<HttpStatus> deleteTaskById(int taskId) {
         if (!this.taskRepository.existsById(taskId)) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Task");
         } else {
             this.taskRepository.deleteById(taskId);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<HttpStatus> takingTask(int taskId, int customerId) {
+        Task task = getTask(taskId);
+        Customer customer = getCustomer(customerId);
+
+        if (task.getCustomer() != null) {
+            if (task.getCustomer() == customer) {
+                throw new AlreadyExistsException(task.getName(), "you");
+            } else if (task.getCustomer().getId() != customerId) {
+                throw new AlreadyExistsException(task.getName(), task.getCustomer().getUsername());
+            }
+        } else {
+            task.setCustomer(customer);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<HttpStatus> removingTask(int taskId, int customerId) {
+        Task task = getTask(taskId);
+        Customer customer = getCustomer(customerId);
+        if (task.getCustomer() != null) {
+            if (task.getCustomer() == customer) {
+                task.setCustomer(null);
+            } else {
+                throw new AlreadyTakenTaskException(task.getName(), task.getCustomer().getUsername());
+            }
+        } else {
+            throw new NoCustomerAssignedException("No assigned customer for task " + task.getName());
+        }
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<HttpStatus> markingTaskAsDone(int taskId, int customerId) {
+        Task task = getTask(taskId);
+        Customer customer = getCustomer(customerId);
+        checkTask(task, customer);
+        if (task.getTaskStatus().equals(true)) {
+            throw new MarkingTaskException("Task is already in a marked state");
+        } else {
+            task.setTaskStatus(true);
+        }
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<HttpStatus> uncheckMarkFromTask(int taskId, int customerId) {
+        Task task = getTask(taskId);
+        Customer customer = getCustomer(customerId);
+        checkTask(task, customer);
+        if (task.getTaskStatus().equals(false)) {
+            throw new MarkingTaskException("Task is already in an unchecked mark state");
+        }else {
+            task.setTaskStatus(false);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+
+
+    private Customer getCustomer(int customerId) {
+        return this.customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoSuchElementException("Customer"));
+    }
+
+    private Task getTask(int taskId) {
+        return this.taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task"));
+    }
+
+    private void checkTask(Task task, Customer customer) {
+        if (task.getCustomer() != customer) {
+            throw new AlreadyExistsException(task.getName(), task.getCustomer().getUsername());
         }
     }
 }

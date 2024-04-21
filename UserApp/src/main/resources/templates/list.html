@@ -9,6 +9,11 @@
 <a th:href="@{/todo/tasks/new}">+ New Task</a>
 
 <h1>List of Tasks</h1>
+<form th:method="GET" th:action="@{/todo/tasks}">
+    <label>Filter:<input type="text" name="filter" th:value="${filter}">
+    <button type="submit">Find</button>
+    </label>
+</form>
 <table>
     <thead>
     <tr>
@@ -18,13 +23,15 @@
     </thead>
     <tbody>
     <tr th:each="task : ${tasks}">
-        <td th:text="${task.id()}"></td>
+        <td th:text="${task.getId()}"></td>
         <td>
-           <a th:href="@{/todo/task/{taskId}(taskId=${task.id()})}" th:text="${task.name()}">
+           <a th:href="@{/todo/task/{taskId}(taskId=${task.getId()})}" th:text="${task.getName()}">
            </a>
         </td>
     </tr>
     </tbody>
 </table>
+
+<h3><a th:href="@{/todo/tasks/home}"><b>&larr; Go to home page</b></a> </h3>
 </body>
 </html>

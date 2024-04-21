@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+</head>
+<body>
+<div th:if="${username}">
+    <h1>Welcome, <span th:text="${username}"></span>!</h1>
+    <h2>Information:</h2>
+    <ul>
+        <li th:text="'Id: ' + ${customer.get().id}"></li>
+        <li th:text="'Email: ' + ${customer.get().email}"></li>
+        <li th:text="'Phone number: ' + ${customer.get().phoneNumber}"></li>
+    </ul>
+    <h1>My list of Tasks</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Task</span>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.id}"></td>
+                <td>
+                    <div style="display: flex; align-items: center;">
+                        <a th:href="@{/todo/task/{taskId}(taskId=${task.getId()})}" th:text="${task.getName()}"></a>
+                        <div th:if="${!task.getTaskStatus()}" style="margin-left: 10px;">
+                            <form th:method="POST" th:action="@{/todo/task/{taskId}/markingTask(taskId=${task.id})}">
+                                <button type="submit" style="background-color: green;">PENDING</button>
+                            </form>
+                        </div>
+                        <div th:if="${task.getTaskStatus()}" style="margin-left: 10px;">
+                            <form th:method="POST" th:action="@{/todo/task/{taskId}/uncheckMark(taskId=${task.id})}">
+                                <button type="submit" style="background-color: red;">COMPLETED</button>
+                            </form>
+                        </div>
+                        <div style="margin-left: 10px">
+                            <form th:method="POST" th:action="@{/todo/task/{taskId}/removing(taskId=${task.id})}">
+                                <button type="submit" style="background-color: darkred">Remove task</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <br>
+    <h3><a href="/logout">Logout</a></h3>
+    <h3><a th:href="@{/todo/tasks}">&larr; Go to tasks list</a></h3>
+    <h3><a th:href="@{/todo/tasks/new}">+ New task</a></h3>
+</div>
+<div th:if="${message}">
+    <h2 th:text="${message}"></h2>
+    <h3><a th:href="${loginUrl}"><b>Login</b></a></h3>
+    <h3><a th:href="@{/auth/registration}"><b>Registration</b></a></h3>
+    <h3><a th:href="@{/todo/tasks}">&larr; Go to tasks list</a></h3>
+</div>
+
+
+
+</body>
+</html>

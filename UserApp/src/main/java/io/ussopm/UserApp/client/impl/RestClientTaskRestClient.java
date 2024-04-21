@@ -1,11 +1,9 @@
-package io.ussopm.UserApp.client;
+package io.ussopm.UserApp.client.impl;
 
 import io.ussopm.UserApp.client.TaskRestClient;
-import io.ussopm.UserApp.controller.payload.LoginRequest;
 import io.ussopm.UserApp.controller.payload.NewTaskPayload;
 import io.ussopm.UserApp.controller.payload.UpdateTaskPayload;
-import io.ussopm.UserApp.dto.CustomerDTO;
-import io.ussopm.UserApp.model.AuthResponse;
+import io.ussopm.UserApp.exception.AlreadyExistsException;
 import io.ussopm.UserApp.model.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -28,7 +26,7 @@ public class RestClientTaskRestClient implements TaskRestClient {
         try {
             return Optional.ofNullable(this.restClient
                     .get()
-                    .uri("/todo/api/task/{id}", id)
+                    .uri("/todo/api/task/{id}",id)
                     .retrieve()
                     .body(Task.class));
         } catch (HttpClientErrorException.NotFound ex) {
@@ -37,18 +35,18 @@ public class RestClientTaskRestClient implements TaskRestClient {
     }
 
     @Override
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks(String filter) {
         return this.restClient
                 .get()
-                .uri("/todo/api/tasks")
+                .uri("/todo/api/tasks?filter={filter}", filter)
                 .retrieve()
                 .body(TASK_TYPE_REFERENCE);
     }
 
     @Override
-    public Task createNewTask(String taskName, String description) {
+    public void createNewTask(String taskName, String description) {
         try {
-            return this.restClient
+            this.restClient
                     .post()
                     .uri("/todo/api/tasks/new")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -90,6 +88,51 @@ public class RestClientTaskRestClient implements TaskRestClient {
         }
     }
 
+    @Override
+    public void takingTaskForCustomer(int taskId, int customerId) {
+        try {
+            this.restClient
+                    .post()
+                    .uri("/todo/api/task/{id}/taking/{customerId}",taskId,customerId)
+                    .body(taskId)
+                    .body(customerId)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException.BadRequest ex) {
+            String response = ex.getResponseBodyAsString();
+            String detail = response.split("\"detail\":\"")[1].split("\",\"instance\"")[0];
+            throw new AlreadyExistsException(detail);
+        }
+    }
+
+    @Override
+    public void removingTaskFromCustomer(int taskId, int customerId) {
+        this.restClient.post()
+                    .uri("/todo/api/task/{id}/removing/{customerId}", taskId, customerId)
+                    .body(taskId)
+                    .body(customerId)
+                    .retrieve()
+                    .toBodilessEntity();
+    }
 
 
+    @Override
+    public void markingTask(int taskId, int customerId) {
+        this.restClient.post()
+                .uri("/todo/api/task/{id}/markTask/{customerId}", taskId, customerId)
+                .body(taskId)
+                .body(customerId)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    @Override
+    public void uncheckMark(int taskId, int customerId) {
+        this.restClient.post()
+                .uri("/todo/api/task/{id}/uncheckMark/{customerId}", taskId, customerId)
+                .body(taskId)
+                .body(customerId)
+                .retrieve()
+                .toBodilessEntity();
+    }
 }

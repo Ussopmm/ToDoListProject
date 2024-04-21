@@ -1,7 +1,7 @@
 package io.ussopm.UserApp.controller;
 
 import io.ussopm.UserApp.client.AuthRestClient;
-import io.ussopm.UserApp.client.BadRequestException;
+import io.ussopm.UserApp.client.impl.BadRequestException;
 import io.ussopm.UserApp.controller.payload.LoginRequest;
 import io.ussopm.UserApp.dto.CustomerDTO;
 import io.ussopm.UserApp.model.AuthResponse;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
 
     private final AuthRestClient restClient;
+
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("login")LoginRequest request) {
         return "auth/login";
@@ -29,12 +30,6 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@ModelAttribute("login") LoginRequest request) {
             return this.restClient.login(request.username(), request.password());
-//        return "redirect:/todo/tasks";
-    }
-
-    @GetMapping("/logout")
-    public String logoutPage() {
-        return "/auth/logout";
     }
 
     @GetMapping("/registration")
