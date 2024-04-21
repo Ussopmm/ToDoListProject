@@ -29,6 +29,7 @@ Launch project:
 2. Find a class ending with word Appilcation *AuthServiceApplication* for every module (you have to run each module for succesfully working of project)
 3. Then you can run modules From run/debug configuration by clicking *Current file->run* or by clicking *run button* next to the psvm method or this class
 
+
 *Notice* 
 Java version - 17
 SKD - Oracle OpenJDK 21.0.2
