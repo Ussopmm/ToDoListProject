@@ -31,6 +31,7 @@ Launch project:
 
 
 *Notice* 
+
 Java version - 17
 
 SKD - Oracle OpenJDK 21.0.2
